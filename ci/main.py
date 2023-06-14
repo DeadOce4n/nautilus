@@ -113,52 +113,53 @@ async def main():
         print(typecheck_output)
         print(test_output)
 
+        if os.getenv("CI_PIPELINE_SOURCE") != "merge_request_event":
 
-        # Stage 2: Build
-        build = test.with_exec(["poetry", "install", "--only", "main"]).with_exec(
-            ["poetry", "build", "--format=wheel"]
-        )
-
-        build_output = await build.stdout()
-
-        wheel_filename = (
-            [string for string in build_output.split("\n") if ".whl" in string][0]
-            .replace("- Built ", "")
-            .strip()
-        )
-
-        container = (
-            client.container()
-            .from_("python:3.11.3-slim-bullseye")
-            .with_workdir("/usr/src/app")
-            .with_file(
-                f"/usr/src/app/{wheel_filename}",
-                build.directory("/usr/src/app/dist").file(wheel_filename),
+            # Stage 2: Build
+            build = test.with_exec(["poetry", "install", "--only", "main"]).with_exec(
+                ["poetry", "build", "--format=wheel"]
             )
-            .with_exec(["pip", "install", f"./{wheel_filename}"])
-            .with_exec(["useradd", "-ms", "/usr/sbin/nologin", "nautilus"])
-            .with_workdir("/home/nautilus")
-            .with_entrypoint(["sopel"])
-            .with_user("nautilus")
-            .with_default_args(["-c", "config/config.cfg"])
-        )
 
-        print(await container.stdout())
+            build_output = await build.stdout()
 
-        image_ref = await container.publish(f"ttl.sh/nautilus-{uuid.uuid4()}:2h")
+            wheel_filename = (
+                [string for string in build_output.split("\n") if ".whl" in string][0]
+                .replace("- Built ", "")
+                .strip()
+            )
 
-        print(f"Published image to {image_ref}")
+            container = (
+                client.container()
+                .from_("python:3.11.3-slim-bullseye")
+                .with_workdir("/usr/src/app")
+                .with_file(
+                    f"/usr/src/app/{wheel_filename}",
+                    build.directory("/usr/src/app/dist").file(wheel_filename),
+                )
+                .with_exec(["pip", "install", f"./{wheel_filename}"])
+                .with_exec(["useradd", "-ms", "/usr/sbin/nologin", "nautilus"])
+                .with_workdir("/home/nautilus")
+                .with_entrypoint(["sopel"])
+                .with_user("nautilus")
+                .with_default_args(["-c", "config/config.cfg"])
+            )
 
-        # Stage 3: Deploy to Kubernetes
-        config.load_config()
-        apps_v1 = k8s_client.AppsV1Api()
+            print(await container.stdout())
 
-        deployment = create_deployment_object(image_ref)
+            image_ref = await container.publish(f"ttl.sh/nautilus-{uuid.uuid4()}:2h")
 
-        update_deployment(
-            apps_v1,
-            deployment,
-        )
+            print(f"Published image to {image_ref}")
+
+            # Stage 3: Deploy to Kubernetes
+            config.load_config()
+            apps_v1 = k8s_client.AppsV1Api()
+
+            deployment = create_deployment_object(image_ref)
+
+            update_deployment(
+                apps_v1,
+                deployment,
+            )
 
 
 if __name__ == "__main__":
