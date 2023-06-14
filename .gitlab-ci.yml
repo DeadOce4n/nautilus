@@ -23,6 +23,8 @@ build-deploy:
   extends: [.dagger]
   script:
     - poetry run python ci/main.py
+    - mkdir ~/.kube
+    - echo $KUBECONFIG > ~/.kube/config
   cache:
     key:
       files:
