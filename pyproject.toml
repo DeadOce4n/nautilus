@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "nautilus"
+version = "0.1.0"
+description = "A bot to manage an azuracast instance"
+authors = ["ThyDevourer <pedro@ivanpartida.xyz>"]
+license = "GPLv3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sopel = "^7.1.9"
+requests = "^2.28.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+pytest = "^7.2.0"
+flake8 = "^6.0.0"
+ruff = "^0.0.272"
+dagger-io = "^0.6.1"
+pytest-cov = "^4.1.0"
+responses = "^0.23.1"
+kubernetes = "^26.1.0"
+pyright = "^1.1.314"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
+[tool.poetry.plugins."sopel.plugins"]
+"nautilus" = "nautilus:nautilus"

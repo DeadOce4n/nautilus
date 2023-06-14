@@ -1,0 +1,12 @@
+*.py[cod]
+__pycache__/
+.env
+ircd.db
+*.log
+.python-version
+config.db
+*.pid
+.venv/
+logs/
+n4ut1lus.old.py
+config.cfg
