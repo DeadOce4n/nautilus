@@ -16,13 +16,19 @@
     - apt-get -qq update -y && apt-get -qq install -y build-essential docker.io
     - pip install --upgrade pip wheel setuptools
     - pip install poetry==1.5.1
-    - poetry config virtualenvs.create false
+    - poetry config virtualenvs.in-project true
     - poetry install --only dev
 
 build-deploy:
   extends: [.dagger]
   script:
-    - python ci/main.py
+    - poetry run python ci/main.py
+  cache:
+    key:
+      files:
+        - poetry.lock
+    paths:
+      - .venv
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PIPELINE_SOURCE == 'push'

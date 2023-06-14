@@ -71,6 +71,8 @@ def update_deployment(api: k8s_client.AppsV1Api, deployment: k8s_client.V1Deploy
 async def main():
     async with dagger.Connection(dagger.Config(log_output=sys.stderr)) as client:
 
+        venv_cache = client.cache_volume("venv")
+
         # Stage 1: Test, typecheck and lint
         test = (
             client.container()
@@ -95,19 +97,24 @@ async def main():
             )
             .with_exec(["pip", "install", "poetry==1.5.1"])
             .with_exec(["pip", "install", "--upgrade", "pip", "wheel", "setuptools"])
-            .with_exec(["poetry", "config", "virtualenvs.create", "false"])
+            .with_exec(["poetry", "config", "virtualenvs.in-project", "true"])
+            .with_mounted_cache("/usr/src/app/.venv", venv_cache)
             .with_exec(["poetry", "install"])
         )
 
         lint_output = (
-            await test.with_exec(["ruff", "check", f"{DEPLOYMENT_NAME}/"]).exit_code(),
+            await test.with_exec(
+                ["poetry", "run", "ruff", "check", f"{DEPLOYMENT_NAME}/"]
+            ).exit_code(),
         )
 
         typecheck_output = (
-            await test.with_exec(["pyright", f"{DEPLOYMENT_NAME}/"]).exit_code(),
+            await test.with_exec(
+                ["poetry", "run", "pyright", f"{DEPLOYMENT_NAME}/"]
+            ).exit_code(),
         )
 
-        test_output = await test.with_exec(["pytest"]).exit_code()
+        test_output = await test.with_exec(["poetry", "run", "pytest"]).exit_code()
 
         print(lint_output)
         print(typecheck_output)
