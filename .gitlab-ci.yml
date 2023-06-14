@@ -16,6 +16,7 @@
     - pip install --upgrade pip wheel setuptools
     - pip install poetry==1.5.1
     - poetry config virtualenvs.create false
+    - poetry install --only dev
 
 build-deploy:
   extends: [.dagger]
