@@ -102,19 +102,15 @@ async def main():
             .with_exec(["poetry", "install"])
         )
 
-        lint_output = (
-            await test.with_exec(
-                ["poetry", "run", "ruff", "check", f"{DEPLOYMENT_NAME}/"]
-            ).exit_code(),
-        )
+        lint_output = await test.with_exec(
+            ["poetry", "run", "ruff", "check", f"{DEPLOYMENT_NAME}/"]
+        ).stdout()
 
-        typecheck_output = (
-            await test.with_exec(
-                ["poetry", "run", "pyright", f"{DEPLOYMENT_NAME}/"]
-            ).exit_code(),
-        )
+        typecheck_output = await test.with_exec(
+            ["poetry", "run", "pyright", f"{DEPLOYMENT_NAME}/"]
+        ).stdout()
 
-        test_output = await test.with_exec(["poetry", "run", "pytest"]).exit_code()
+        test_output = await test.with_exec(["poetry", "run", "pytest"]).stdout()
 
         print(lint_output)
         print(typecheck_output)
