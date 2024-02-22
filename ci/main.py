@@ -154,7 +154,7 @@ async def main():
                 .with_workdir("/home/nautilus")
                 .with_entrypoint(["sopel"])
                 .with_user("nautilus")
-                .with_default_args(["-c", "config/config.cfg"])
+                .with_default_args(["-c", "config_storage/config.cfg"])
             )
 
             print(await container.stdout())
