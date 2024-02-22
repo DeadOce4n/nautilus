@@ -17,6 +17,10 @@ def create_deployment_object(image: str):
             k8s_client.V1VolumeMount(
                 name=f"{DEPLOYMENT_NAME}-config",
                 mount_path=f"/home/{DEPLOYMENT_NAME}/config/",
+            ),
+            k8s_client.V1VolumeMount(
+                name=f"{DEPLOYMENT_NAME}-config-storage",
+                mount_path=f"/home/{DEPLOYMENT_NAME}/config_storage/",
             )
         ],
     )
@@ -32,6 +36,12 @@ def create_deployment_object(image: str):
                     name=f"{DEPLOYMENT_NAME}-config",
                     config_map=k8s_client.V1ConfigMapEnvSource(
                         name=f"{DEPLOYMENT_NAME}-config"
+                    ),
+                ),
+                k8s_client.V1Volume(
+                    name=f"{DEPLOYMENT_NAME}-config-storage",
+                    persistent_volume_claim=k8s_client.V1PersistentVolumeClaimVolumeSource(
+                        claim_name=f"{DEPLOYMENT_NAME}-config-storage"
                     ),
                 )
             ],
