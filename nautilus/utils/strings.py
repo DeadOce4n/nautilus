@@ -36,7 +36,7 @@ STREAMERS_AVAILABLE_ACTIONS = [
     f"{COLOR}{C.BLUE}Acciones disponibles para el comando {BOLD}!djs{BOLD}:",
     f"{COLOR}{C.BLUE}!djs {BOLD}registrar",
     f"{COLOR}{C.BLUE}!djs {BOLD}borrar",
-    f"{COLOR}{C.BLUE}!djs {BOLD}lista",
+    f"{COLOR}{C.BLUE}!djs {BOLD}listar",
 ]
 STREAMERS_UNKNOWN_COMMAND = f"{COLOR}{C.RED}Error: no se reconoce el comando {BOLD}{{}}"
 STREAMERS_CONFIRM_DELETE = (
@@ -48,4 +48,7 @@ STREAMERS_ERROR_MISSING_TOKEN = (
 )
 STREAMERS_ERROR_WRONG_TOKEN = (
     f"{COLOR}{C.RED}Error: el código de confirmación es incorrecto"
+)
+STREAMERS_DELETE_SUCCESS = (
+    f"{COLOR}{C.GREEN}Se ha eliminado al DJ {BOLD}{{}}{BOLD} con exito"
 )

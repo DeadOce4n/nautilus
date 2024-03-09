@@ -8,6 +8,7 @@ from ..utils.strings import (
     GENERAL_MISSING_ARGS,
     STREAMERS_AVAILABLE_ACTIONS,
     STREAMERS_CONFIRM_DELETE,
+    STREAMERS_DELETE_SUCCESS,
     STREAMERS_ERROR_MISSING_TOKEN,
     STREAMERS_ERROR_WRONG_TOKEN,
     STREAMERS_UNKNOWN_COMMAND,
@@ -86,6 +87,7 @@ def djs(bot: Sopel, trigger: Trigger):
                 try:
                     streamers_service.delete(username)
                     bot.memory["g"]["pending_deletion"].pop(username)
+                    bot.say(STREAMERS_DELETE_SUCCESS.format(username), trigger.sender)
                 except UserNotFound as e:
                     LOGGER.error(e)
                     bot.say(
