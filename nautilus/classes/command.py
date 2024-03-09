@@ -20,6 +20,8 @@ class Command:
         if total_args_qty - required_args_qty < 0:
             raise ExceedingArgs
         if passed_args_diff > 0:
-            raise MissingRequiredArgs(self.params[passed_args_diff - 1])
+            print(passed_args_diff)
+            print(self.params)
+            raise MissingRequiredArgs(self.params[-passed_args_diff])
         else:
             self.action(*significant_args)
