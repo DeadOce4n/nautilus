@@ -52,3 +52,6 @@ STREAMERS_ERROR_WRONG_TOKEN = (
 STREAMERS_DELETE_SUCCESS = (
     f"{COLOR}{C.GREEN}Se ha eliminado al DJ {BOLD}{{}}{BOLD} con exito"
 )
+STREAMERS_UNKNOWN_ERROR = (
+    f"{COLOR}{C.RED}Error desconocido, pídale al administrador que revise los logs"
+)

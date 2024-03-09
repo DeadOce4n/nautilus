@@ -12,6 +12,7 @@ from ..utils.strings import (
     STREAMERS_ERROR_MISSING_TOKEN,
     STREAMERS_ERROR_WRONG_TOKEN,
     STREAMERS_UNKNOWN_COMMAND,
+    STREAMERS_UNKNOWN_ERROR,
     streamers as streamers_strings,
     general as general_strings,
 )
@@ -43,8 +44,7 @@ def djs(bot: Sopel, trigger: Trigger):
 
         streamers_service: StreamersService = bot.memory["g"]["streamers_service"]
 
-        if not isinstance(streamers_service, StreamersService):
-            raise Exception("Failed to initialize streamers service")
+        assert isinstance(streamers_service, StreamersService)
 
         def show(all: bool = False):
             streamers = ", ".join(
@@ -143,3 +143,6 @@ def djs(bot: Sopel, trigger: Trigger):
         else:
             data = err.missing_args.name
         bot.say(GENERAL_MISSING_ARGS.format(data), trigger.sender)
+    except AssertionError as err:
+        LOGGER.error(err)
+        bot.say(STREAMERS_UNKNOWN_ERROR, trigger.sender)
