@@ -10,3 +10,4 @@ config.db
 logs/
 n4ut1lus.old.py
 config.cfg
+instance/
