@@ -28,11 +28,24 @@ streamers = {
     "DJ_REGISTRATION_FAILED": f"{COLOR}{C.RED}{BOLD}Error: no se pudo registrar al DJ (puede que el nick ya esté en uso).",
 }
 
-DJS_CONFIRM_DELETE = (
+GENERAL_MISSING_ARGS = (
+    f'{COLOR}{C.RED}{BOLD}Error:{BOLD} El argumento {BOLD}"{{}}"{BOLD} es obligatorio'
+)
+
+STREAMERS_AVAILABLE_ACTIONS = [
+    f"{COLOR}{C.BLUE}Acciones disponibles para el comando {BOLD}!djs{BOLD}:",
+    f"{COLOR}{C.BLUE}!djs {BOLD}registrar",
+    f"{COLOR}{C.BLUE}!djs {BOLD}borrar",
+    f"{COLOR}{C.BLUE}!djs {BOLD}lista",
+]
+STREAMERS_UNKNOWN_COMMAND = f"{COLOR}{C.RED}Error: no se reconoce el comando {BOLD}{{}}"
+STREAMERS_CONFIRM_DELETE = (
     f"{COLOR}{C.BLUE}Para confirmar la eliminación del DJ {BOLD}{{}}{BOLD} escribe:"
     f"{BOLD} !djs borrar {{}} {{}}"
 )
-DJS_ERROR_MISSING_TOKEN = (
+STREAMERS_ERROR_MISSING_TOKEN = (
     f"{COLOR}{C.RED}Error: por favor introduce el código de confirmación"
 )
-DJS_ERROR_WRONG_TOKEN = f"{COLOR}{C.RED}Error: el código de confirmación es incorrecto"
+STREAMERS_ERROR_WRONG_TOKEN = (
+    f"{COLOR}{C.RED}Error: el código de confirmación es incorrecto"
+)

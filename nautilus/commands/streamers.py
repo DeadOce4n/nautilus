@@ -5,9 +5,12 @@ from sopel.trigger import Trigger
 from uuid import uuid4
 
 from ..utils.strings import (
-    DJS_CONFIRM_DELETE,
-    DJS_ERROR_MISSING_TOKEN,
-    DJS_ERROR_WRONG_TOKEN,
+    GENERAL_MISSING_ARGS,
+    STREAMERS_AVAILABLE_ACTIONS,
+    STREAMERS_CONFIRM_DELETE,
+    STREAMERS_ERROR_MISSING_TOKEN,
+    STREAMERS_ERROR_WRONG_TOKEN,
+    STREAMERS_UNKNOWN_COMMAND,
     streamers as streamers_strings,
     general as general_strings,
 )
@@ -72,13 +75,13 @@ def djs(bot: Sopel, trigger: Trigger):
                 token = str(uuid4().time_low)
                 bot.memory["g"]["pending_deletion"][username] = token
                 bot.say(
-                    DJS_CONFIRM_DELETE.format(username, username, token),
+                    STREAMERS_CONFIRM_DELETE.format(username, username, token),
                     trigger.sender,
                 )
             elif code is None:
-                bot.say(DJS_ERROR_MISSING_TOKEN, trigger.sender)
+                bot.say(STREAMERS_ERROR_MISSING_TOKEN, trigger.sender)
             elif code != bot.memory["g"]["pending_deletion"][username]:
-                bot.say(DJS_ERROR_WRONG_TOKEN, trigger.sender)
+                bot.say(STREAMERS_ERROR_WRONG_TOKEN, trigger.sender)
             else:
                 try:
                     streamers_service.delete(username)
@@ -103,9 +106,6 @@ def djs(bot: Sopel, trigger: Trigger):
                 [Param("usuario", True), Param("contraseña", True)],
                 change_password,
             ),
-            "default": Command(
-                [], lambda: bot.say("Comando desconocido :(", trigger.sender)
-            ),
         }
 
         args: list[str] = [
@@ -115,10 +115,15 @@ def djs(bot: Sopel, trigger: Trigger):
         ]
 
         if len(args) < 2:
-            for string in streamers_strings["ALL_ARGS_MISSING"]:
+            for string in STREAMERS_AVAILABLE_ACTIONS:
                 bot.say(string, trigger.sender)
 
-        commands.get(trigger.group(3), commands["default"]).exec(args)
+        command_name = trigger.group(3)
+
+        if command_name is not None and command_name not in commands:
+            bot.say(STREAMERS_UNKNOWN_COMMAND.format(command_name), trigger.sender)
+        elif command_name is not None:
+            commands[command_name].exec(args)
 
     except ConnectionError as err:
         LOGGER.error(err)
@@ -135,4 +140,4 @@ def djs(bot: Sopel, trigger: Trigger):
             data = ", ".join([arg.name for arg in err.missing_args])
         else:
             data = err.missing_args.name
-        bot.say(f"Hacen falta argumentos: {data}", trigger.sender)
+        bot.say(GENERAL_MISSING_ARGS.format(data), trigger.sender)
