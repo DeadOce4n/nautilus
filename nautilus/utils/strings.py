@@ -24,4 +24,15 @@ streamers = {
     "TO_DELETE_USER_X_CODE_COMMAND": f"{COLOR}{C.BLUE}!djs borrar {{}} {BOLD} {{}}",
     "USER_NOT_EXISTS": f"{COLOR}{C.RED}{BOLD}Error:{BOLD} el usuario {BOLD}{{}}{BOLD}"
     "no existe.",
+    "DJ_REGISTRATION_SUCCESS": f"{COLOR}{C.GREEN}Se ha registrado al DJ {BOLD}{{}}{BOLD} con exito.",
+    "DJ_REGISTRATION_FAILED": f"{COLOR}{C.RED}{BOLD}Error: no se pudo registrar al DJ (puede que el nick ya esté en uso).",
 }
+
+DJS_CONFIRM_DELETE = (
+    f"{COLOR}{C.BLUE}Para confirmar la eliminación del DJ {BOLD}{{}}{BOLD} escribe:"
+    f"{BOLD} !djs borrar {{}} {{}}"
+)
+DJS_ERROR_MISSING_TOKEN = (
+    f"{COLOR}{C.RED}Error: por favor introduce el código de confirmación"
+)
+DJS_ERROR_WRONG_TOKEN = f"{COLOR}{C.RED}Error: el código de confirmación es incorrecto"

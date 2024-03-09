@@ -83,7 +83,7 @@ class StreamersService:
 
     def _delete(self, id: int):
         response = requests.delete(
-            f"{self._base_url}/station/{self._shortcode}/streamers/{id}",
+            f"{self._base_url}/station/{self._shortcode}/streamer/{id}",
             headers=self._base_headers,
         )
         response.raise_for_status()
@@ -99,11 +99,22 @@ class StreamersService:
         response.raise_for_status()
 
     def delete(self, username: str):
+        """
+        Args:
+            username (str): Username of the user to delete
+        Raises:
+            UserNotFound: If user does not exist
+        """
         streamers = self._get_streamers()
         streamer = [s for s in streamers if s.streamer_username == username]
         if len(streamer) == 0:
             raise UserNotFound(f"Usuario {username} no existe")
-        self._delete(streamer[0].id)
+        try:
+            self._delete(streamer[0].id)
+            self._streamers = None
+        except requests.HTTPError as e:
+            if e.response.status_code == 404:
+                raise UserNotFound(f"Usuario {username} no existe")
 
     def change_password(self, username: str, new_password: str):
         user = self.get_one(username=username)

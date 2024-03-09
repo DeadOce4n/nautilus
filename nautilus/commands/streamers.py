@@ -2,7 +2,15 @@ from requests.exceptions import HTTPError, ConnectionError
 from sopel.tools import get_logger
 from sopel.bot import Sopel
 from sopel.trigger import Trigger
-from ..utils.strings import streamers as streamers_strings, general as general_strings
+from uuid import uuid4
+
+from ..utils.strings import (
+    DJS_CONFIRM_DELETE,
+    DJS_ERROR_MISSING_TOKEN,
+    DJS_ERROR_WRONG_TOKEN,
+    streamers as streamers_strings,
+    general as general_strings,
+)
 from ..utils.exceptions import UserNotFound, MissingRequiredArgs
 from ..services.streamers import StreamersService
 from ..classes.command import Command
@@ -20,13 +28,19 @@ def djs(bot: Sopel, trigger: Trigger):
     !djs cambiar-contraseña usuario contraseña
     """
     try:
-        if not bot.memory["g"].get("streamers_service"):
+        if "streamers_service" not in bot.memory["g"]:
             bot.memory["g"]["streamers_service"] = StreamersService(
                 bot.config.AzuraCast.base_url,
                 bot.config.AzuraCast.shortcode,
                 bot.config.AzuraCast.api_key,
             )
+        if not bot.memory["g"].get("pending_deletion"):
+            bot.memory["g"]["pending_deletion"] = {}
+
         streamers_service: StreamersService = bot.memory["g"]["streamers_service"]
+
+        if not isinstance(streamers_service, StreamersService):
+            raise Exception("Failed to initialize streamers service")
 
         def show(all: bool = False):
             streamers = ", ".join(
@@ -38,11 +52,43 @@ def djs(bot: Sopel, trigger: Trigger):
             )
             bot.say(streamers, trigger.sender)
 
-        def create(*args):
-            print("Create")
+        def create(username: str, password: str):
+            try:
+                streamers_service.create(username, password)
+                LOGGER.info(f"Registered new DJ: {username}")
+                bot.say(
+                    streamers_strings["DJ_REGISTRATION_SUCCESS"].format(username),
+                    trigger.sender,
+                )
+            except HTTPError as e:
+                LOGGER.error(e)
+                bot.say(
+                    streamers_strings["DJ_REGISTRATION_FAILED"],
+                    trigger.sender,
+                )
 
-        def delete(*args):
-            bot.say(", ".join(args), trigger.sender)
+        def delete(username: str, code: str | None = None):
+            if username not in bot.memory["g"]["pending_deletion"]:
+                token = str(uuid4().time_low)
+                bot.memory["g"]["pending_deletion"][username] = token
+                bot.say(
+                    DJS_CONFIRM_DELETE.format(username, username, token),
+                    trigger.sender,
+                )
+            elif code is None:
+                bot.say(DJS_ERROR_MISSING_TOKEN, trigger.sender)
+            elif code != bot.memory["g"]["pending_deletion"][username]:
+                bot.say(DJS_ERROR_WRONG_TOKEN, trigger.sender)
+            else:
+                try:
+                    streamers_service.delete(username)
+                    bot.memory["g"]["pending_deletion"].pop(username)
+                except UserNotFound as e:
+                    LOGGER.error(e)
+                    bot.say(
+                        streamers_strings["USER_NOT_EXISTS"].format(username),
+                        trigger.sender,
+                    )
 
         def change_password():
             print("Change password")
@@ -67,7 +113,6 @@ def djs(bot: Sopel, trigger: Trigger):
             for (i, group) in enumerate(trigger.groups())
             if group is not None and i != 1
         ]
-
 
         if len(args) < 2:
             for string in streamers_strings["ALL_ARGS_MISSING"]:
