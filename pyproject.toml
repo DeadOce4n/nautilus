@@ -32,3 +32,6 @@ venv = ".venv"
 
 [tool.poetry.plugins."sopel.plugins"]
 "nautilus" = "nautilus:nautilus"
+
+[tool.poe.tasks]
+dev = "sh dev.sh"
