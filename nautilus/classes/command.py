@@ -28,6 +28,8 @@ class Command:
         if total_args_qty - len(required_params) < 0:
             raise ExceedingArgs
         if passed_args_diff > 0:
-            raise MissingRequiredArgs(self.params[:passed_args_diff])
+            raise MissingRequiredArgs(
+                required_params[len(required_params) - passed_args_diff :]
+            )
         else:
             self.action(*significant_args)
