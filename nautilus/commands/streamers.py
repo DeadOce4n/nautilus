@@ -1,10 +1,12 @@
 from requests.exceptions import HTTPError, ConnectionError
+from sopel.formatting import bold
 from sopel.tools import get_logger
 from sopel.bot import Sopel
 from sopel.trigger import Trigger
 from uuid import uuid4
 
 from ..utils.strings import (
+    GENERAL_MISSING_ARG,
     GENERAL_MISSING_ARGS,
     STREAMERS_AVAILABLE_ACTIONS,
     STREAMERS_CONFIRM_DELETE,
@@ -16,7 +18,11 @@ from ..utils.strings import (
     streamers as streamers_strings,
     general as general_strings,
 )
-from ..utils.exceptions import UserNotFound, MissingRequiredArgs
+from ..utils.exceptions import (
+    RequiredArgsAfterOptionalArgs,
+    UserNotFound,
+    MissingRequiredArgs,
+)
 from ..services.streamers import StreamersService
 from ..classes.command import Command
 from ..classes.param import Param
@@ -138,11 +144,19 @@ def djs(bot: Sopel, trigger: Trigger):
         bot.say("Hola", trigger.sender)
     except MissingRequiredArgs as err:
         data = None
+        missing_args_qty = 0
         if isinstance(err.missing_args, list):
-            data = ", ".join([arg.name for arg in err.missing_args])
+            data = f", ".join([bold(f'"{arg.name}"') for arg in err.missing_args])
+            missing_args_qty = len(err.missing_args)
         else:
             data = err.missing_args.name
-        bot.say(GENERAL_MISSING_ARGS.format(data), trigger.sender)
-    except AssertionError as err:
+            missing_args_qty = 1
+        bot.say(
+            (
+                GENERAL_MISSING_ARGS if missing_args_qty > 1 else GENERAL_MISSING_ARG
+            ).format(data),
+            trigger.sender,
+        )
+    except (AssertionError, RequiredArgsAfterOptionalArgs) as err:
         LOGGER.error(err)
         bot.say(STREAMERS_UNKNOWN_ERROR, trigger.sender)

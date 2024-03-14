@@ -12,3 +12,7 @@ class MissingRequiredArgs(Exception):
 
 class ExceedingArgs(Exception):
     pass
+
+
+class RequiredArgsAfterOptionalArgs(Exception):
+    pass

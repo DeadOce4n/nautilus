@@ -28,8 +28,11 @@ streamers = {
     "DJ_REGISTRATION_FAILED": f"{COLOR}{C.RED}{BOLD}Error: no se pudo registrar al DJ (puede que el nick ya esté en uso).",
 }
 
+GENERAL_MISSING_ARG = (
+    f"{COLOR}{C.RED}{BOLD}Error:{BOLD} El argumento {{}} es obligatorio"
+)
 GENERAL_MISSING_ARGS = (
-    f'{COLOR}{C.RED}{BOLD}Error:{BOLD} El argumento {BOLD}"{{}}"{BOLD} es obligatorio'
+    f"{COLOR}{C.RED}{BOLD}Error:{BOLD} Los argumentos {{}} son obligatorios"
 )
 
 STREAMERS_AVAILABLE_ACTIONS = [
