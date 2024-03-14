@@ -26,10 +26,6 @@ pyright = "^1.1.314"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.pyright]
-venvPath = "."
-venv = ".venv"
-
 [tool.poetry.plugins."sopel.plugins"]
 "nautilus" = "nautilus:nautilus"
 
