@@ -92,7 +92,7 @@ class StreamersService:
         headers = {**self._base_headers, "Content-Type": "application/json"}
         params = {**params}
         response = requests.put(
-            f"{self._base_url}/station/{self._shortcode}/streamers/{id}",
+            f"{self._base_url}/station/{self._shortcode}/streamer/{id}",
             headers=headers,
             data=json.dumps(params),
         )
@@ -119,5 +119,5 @@ class StreamersService:
     def change_password(self, username: str, new_password: str):
         user = self.get_one(username=username)
         if not user:
-            raise UserNotFound
+            raise UserNotFound(username=username)
         self._update(user.id, params={"password": new_password})

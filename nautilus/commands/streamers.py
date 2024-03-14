@@ -9,7 +9,11 @@ from ..utils.strings import (
     GENERAL_CONN_ERROR,
     GENERAL_MISSING_ARG,
     GENERAL_MISSING_ARGS,
+    STREAMERS_ANON_NOT_EXISTS,
     STREAMERS_AVAILABLE_ACTIONS,
+    STREAMERS_CHANGE_PASSWORD_PASSWORDS_NOT_SAME,
+    STREAMERS_CHANGE_PASSWORD_SUCCESS,
+    STREAMERS_CONFIRM_CHANGE_PASSWORD,
     STREAMERS_CONFIRM_DELETE,
     STREAMERS_DELETE_SUCCESS,
     STREAMERS_ERROR_MISSING_TOKEN,
@@ -49,6 +53,8 @@ def djs(bot: Sopel, trigger: Trigger):
             )
         if not bot.memory["g"].get("pending_deletion"):
             bot.memory["g"]["pending_deletion"] = {}
+        if not bot.memory["g"].get("pending_change_password"):
+            bot.memory["g"]["pending_change_password"] = {}
 
         streamers_service: StreamersService = bot.memory["g"]["streamers_service"]
 
@@ -103,8 +109,51 @@ def djs(bot: Sopel, trigger: Trigger):
                         trigger.sender,
                     )
 
-        def change_password():
-            print("Change password")
+        def change_password(
+            username: str,
+            new_password: str,
+            token: str | None = None,
+        ):
+            if username not in bot.memory["g"]["pending_change_password"]:
+                token = str(uuid4().time_low)
+                bot.memory["g"]["pending_change_password"][username] = {
+                    "token": token,
+                    "new_password": new_password,
+                }
+                bot.say(
+                    STREAMERS_CONFIRM_CHANGE_PASSWORD.format(
+                        username, username, new_password, token
+                    ),
+                    trigger.sender,
+                )
+            elif token is None:
+                bot.say(STREAMERS_ERROR_MISSING_TOKEN, trigger.sender)
+            elif token != bot.memory["g"]["pending_change_password"][username]["token"]:
+                bot.say(STREAMERS_ERROR_WRONG_TOKEN, trigger.sender)
+            elif (
+                new_password
+                != bot.memory["g"]["pending_change_password"][username]["new_password"]
+            ):
+                bot.say(STREAMERS_CHANGE_PASSWORD_PASSWORDS_NOT_SAME, trigger.sender)
+            else:
+                try:
+                    streamers_service.change_password(
+                        username,
+                        bot.memory["g"]["pending_change_password"][username][
+                            "new_password"
+                        ],
+                    )
+                    bot.memory["g"]["pending_change_password"].pop(username)
+                    bot.say(
+                        STREAMERS_CHANGE_PASSWORD_SUCCESS.format(username),
+                        trigger.sender,
+                    )
+                except HTTPError as e:
+                    LOGGER.error(e)
+                    bot.say(
+                        STREAMERS_USER_NOT_EXISTS.format(username),
+                        trigger.sender,
+                    )
 
         commands: dict[str, Command] = {
             "listar": Command([Param("todos")], show),
@@ -113,7 +162,11 @@ def djs(bot: Sopel, trigger: Trigger):
             ),
             "borrar": Command([Param("usuario", True), Param("token")], delete),
             "cambiar-contraseña": Command(
-                [Param("usuario", True), Param("contraseña", True)],
+                [
+                    Param("usuario", True),
+                    Param("nueva-contraseña", True),
+                    Param("token"),
+                ],
                 change_password,
             ),
         }
@@ -143,7 +196,12 @@ def djs(bot: Sopel, trigger: Trigger):
         bot.say(err.strerror, trigger.sender)
     except UserNotFound as err:
         LOGGER.error(err)
-        bot.say("Hola", trigger.sender)
+        bot.say(
+            STREAMERS_USER_NOT_EXISTS.format(err.username)
+            if err.username is not None
+            else STREAMERS_ANON_NOT_EXISTS,
+            trigger.sender,
+        )
     except MissingRequiredArgs as err:
         data = None
         missing_args_qty = 0

@@ -2,7 +2,8 @@ from ..classes.param import Param
 
 
 class UserNotFound(Exception):
-    pass
+    def __init__(self, username: str | None = None):
+        self.username = username
 
 
 class MissingRequiredArgs(Exception):

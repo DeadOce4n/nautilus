@@ -19,7 +19,9 @@ STREAMERS_AVAILABLE_ACTIONS = [
     f"{COLOR}{C.BLUE}!djs {BOLD}borrar",
     f"{COLOR}{C.BLUE}!djs {BOLD}listar",
 ]
-STREAMERS_UNKNOWN_COMMAND = f"{COLOR}{C.RED}Error: no se reconoce el comando {BOLD}{{}}"
+STREAMERS_UNKNOWN_COMMAND = (
+    f"{COLOR}{C.RED}{BOLD}Error:{BOLD} no se reconoce el comando {BOLD}{{}}"
+)
 STREAMERS_CONFIRM_DELETE = (
     f"{COLOR}{C.BLUE}Para confirmar la eliminación del DJ {BOLD}{{}}{BOLD} escribe:"
     f"{BOLD} !djs borrar {{}} {{}}"
@@ -31,7 +33,7 @@ STREAMERS_ERROR_WRONG_TOKEN = (
     f"{COLOR}{C.RED}Error: el código de confirmación es incorrecto"
 )
 STREAMERS_DELETE_SUCCESS = (
-    f"{COLOR}{C.GREEN}Se ha eliminado al DJ {BOLD}{{}}{BOLD} con exito"
+    f"{COLOR}{C.GREEN}Se ha eliminado al DJ {BOLD}{{}}{BOLD} con éxito"
 )
 STREAMERS_UNKNOWN_ERROR = (
     f"{COLOR}{C.RED}Error desconocido, pídale al administrador que revise los logs"
@@ -44,5 +46,16 @@ STREAMERS_REGISTRATION_FAILED = (
     " esté en uso)"
 )
 STREAMERS_USER_NOT_EXISTS = (
-    f"{COLOR}{C.RED}{BOLD}Error:{BOLD} el usuario {BOLD}{{}}{BOLD}"
+    f'{COLOR}{C.RED}{BOLD}Error:{BOLD} el usuario {BOLD}"{{}}"{BOLD} no existe'
+)
+STREAMERS_ANON_NOT_EXISTS = f"{COLOR}{C.RED}{BOLD}Error:{BOLD} el usuario no existe"
+STREAMERS_CONFIRM_CHANGE_PASSWORD = (
+    f"{COLOR}{C.BLUE}Para confirmar la contraseña del DJ {BOLD}{{}}{BOLD} escribe:"
+    f"{BOLD} !djs cambiar-password {{}} {{}} {{}}"
+)
+STREAMERS_CHANGE_PASSWORD_SUCCESS = (
+    f"{COLOR}{C.GREEN}La contraseña del DJ {BOLD}{{}}{BOLD} se ha cambiado con éxito"
+)
+STREAMERS_CHANGE_PASSWORD_PASSWORDS_NOT_SAME = (
+    f"{COLOR}{C.RED}{BOLD}Error:{BOLD} las contraseñas no coinciden"
 )
