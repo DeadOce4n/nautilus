@@ -1,32 +1,10 @@
 from sopel.formatting import (
     CONTROL_COLOR as COLOR,
     CONTROL_BOLD as BOLD,
-    CONTROL_NORMAL as RESET,
     colors as C,
 )
 
-general = {"CONN_ERROR": f"{COLOR}{C.YELLOW}Error de conexión, intente más tarde"}
-
-streamers = {
-    "ALL_ARGS_MISSING": [
-        f"{COLOR}{C.RED}{BOLD}Error:{BOLD} hacen falta argumentos.",
-        f"{COLOR}{C.BLUE}Ejemplo: !djs {BOLD}registrar",
-        f"{COLOR}{C.BLUE}Ejemplo: !djs {BOLD}borrar",
-        f"{COLOR}{C.BLUE}Ejemplo: !djs {BOLD}lista",
-    ],
-    "ARGS_MISSING_DELETE": [
-        f"{COLOR}{C.RED}{BOLD}Error:{BOLD} hacen falta argumentos.",
-        f"{COLOR}{C.BLUE}Ejemplo: !djs borrar {BOLD}usuario",
-    ],
-    "LIST": f"{COLOR}{C.BLUE}Nuestros DJs son: {BOLD}{{streamers}}",
-    "TO_DELETE_USER_X": f"{COLOR}{C.BLUE}Para borrar a {BOLD}{{}}{RESET}{COLOR}{C.BLUE}"
-    "escribe:",
-    "TO_DELETE_USER_X_CODE_COMMAND": f"{COLOR}{C.BLUE}!djs borrar {{}} {BOLD} {{}}",
-    "USER_NOT_EXISTS": f"{COLOR}{C.RED}{BOLD}Error:{BOLD} el usuario {BOLD}{{}}{BOLD}"
-    "no existe.",
-    "DJ_REGISTRATION_SUCCESS": f"{COLOR}{C.GREEN}Se ha registrado al DJ {BOLD}{{}}{BOLD} con exito.",
-    "DJ_REGISTRATION_FAILED": f"{COLOR}{C.RED}{BOLD}Error: no se pudo registrar al DJ (puede que el nick ya esté en uso).",
-}
+GENERAL_CONN_ERROR = f"{COLOR}{C.YELLOW}Error de conexión, intente más tarde"
 
 GENERAL_MISSING_ARG = (
     f"{COLOR}{C.RED}{BOLD}Error:{BOLD} El argumento {{}} es obligatorio"
@@ -57,4 +35,11 @@ STREAMERS_DELETE_SUCCESS = (
 )
 STREAMERS_UNKNOWN_ERROR = (
     f"{COLOR}{C.RED}Error desconocido, pídale al administrador que revise los logs"
+)
+STREAMERS_REGISTRATION_SUCCESS = (
+    f"{COLOR}{C.GREEN}Se ha registrado al DJ {BOLD}{{}}{BOLD} con exito."
+)
+STREAMERS_REGISTRATION_FAILED = f"{COLOR}{C.RED}{BOLD}Error: no se pudo registrar al DJ (puede que el nick ya esté en uso)."
+STREAMERS_USER_NOT_EXISTS = (
+    f"{COLOR}{C.RED}{BOLD}Error:{BOLD} el usuario {BOLD}{{}}{BOLD}"
 )

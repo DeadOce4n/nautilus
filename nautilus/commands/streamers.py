@@ -6,6 +6,7 @@ from sopel.trigger import Trigger
 from uuid import uuid4
 
 from ..utils.strings import (
+    GENERAL_CONN_ERROR,
     GENERAL_MISSING_ARG,
     GENERAL_MISSING_ARGS,
     STREAMERS_AVAILABLE_ACTIONS,
@@ -13,10 +14,11 @@ from ..utils.strings import (
     STREAMERS_DELETE_SUCCESS,
     STREAMERS_ERROR_MISSING_TOKEN,
     STREAMERS_ERROR_WRONG_TOKEN,
+    STREAMERS_REGISTRATION_FAILED,
+    STREAMERS_REGISTRATION_SUCCESS,
     STREAMERS_UNKNOWN_COMMAND,
     STREAMERS_UNKNOWN_ERROR,
-    streamers as streamers_strings,
-    general as general_strings,
+    STREAMERS_USER_NOT_EXISTS,
 )
 from ..utils.exceptions import (
     RequiredArgsAfterOptionalArgs,
@@ -67,13 +69,13 @@ def djs(bot: Sopel, trigger: Trigger):
                 streamers_service.create(username, password)
                 LOGGER.info(f"Registered new DJ: {username}")
                 bot.say(
-                    streamers_strings["DJ_REGISTRATION_SUCCESS"].format(username),
+                    STREAMERS_REGISTRATION_SUCCESS.format(username),
                     trigger.sender,
                 )
             except HTTPError as e:
                 LOGGER.error(e)
                 bot.say(
-                    streamers_strings["DJ_REGISTRATION_FAILED"],
+                    STREAMERS_REGISTRATION_FAILED,
                     trigger.sender,
                 )
 
@@ -97,7 +99,7 @@ def djs(bot: Sopel, trigger: Trigger):
                 except UserNotFound as e:
                     LOGGER.error(e)
                     bot.say(
-                        streamers_strings["USER_NOT_EXISTS"].format(username),
+                        STREAMERS_USER_NOT_EXISTS.format(username),
                         trigger.sender,
                     )
 
@@ -135,7 +137,7 @@ def djs(bot: Sopel, trigger: Trigger):
 
     except ConnectionError as err:
         LOGGER.error(err)
-        bot.say(general_strings["CONN_ERROR"], trigger.sender)
+        bot.say(GENERAL_CONN_ERROR, trigger.sender)
     except HTTPError as err:
         LOGGER.error(err)
         bot.say(err.strerror, trigger.sender)
