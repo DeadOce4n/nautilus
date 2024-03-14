@@ -148,7 +148,7 @@ def djs(bot: Sopel, trigger: Trigger):
         data = None
         missing_args_qty = 0
         if isinstance(err.missing_args, list):
-            data = f", ".join([bold(f'"{arg.name}"') for arg in err.missing_args])
+            data = ", ".join([bold(f'"{arg.name}"') for arg in err.missing_args])
             missing_args_qty = len(err.missing_args)
         else:
             data = err.missing_args.name

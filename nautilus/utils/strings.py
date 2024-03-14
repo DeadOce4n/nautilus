@@ -39,7 +39,10 @@ STREAMERS_UNKNOWN_ERROR = (
 STREAMERS_REGISTRATION_SUCCESS = (
     f"{COLOR}{C.GREEN}Se ha registrado al DJ {BOLD}{{}}{BOLD} con exito."
 )
-STREAMERS_REGISTRATION_FAILED = f"{COLOR}{C.RED}{BOLD}Error: no se pudo registrar al DJ (puede que el nick ya esté en uso)."
+STREAMERS_REGISTRATION_FAILED = (
+    f"{COLOR}{C.RED}{BOLD}Error: no se pudo registrar al DJ (puede que el nick ya"
+    " esté en uso)"
+)
 STREAMERS_USER_NOT_EXISTS = (
     f"{COLOR}{C.RED}{BOLD}Error:{BOLD} el usuario {BOLD}{{}}{BOLD}"
 )
