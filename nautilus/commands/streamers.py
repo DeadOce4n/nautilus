@@ -36,7 +36,7 @@ from ..classes.param import Param
 LOGGER = get_logger("nautilus")
 
 
-def djs(bot: Sopel, trigger: Trigger):
+def djs_handler(bot: Sopel, trigger: Trigger):
     """
     Commands:
     !djs listar [todos]

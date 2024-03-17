@@ -3,7 +3,7 @@ from sopel.tools import SopelMemory
 from sopel.plugin import command
 
 from .utils.decorators import allow_from
-from .commands.streamers import djs as _djs
+from .commands.streamers import djs_handler
 
 
 class AzuraCastSection(config.types.StaticSection):
@@ -26,4 +26,4 @@ def configure(config: config.Config):
 @command("djs")
 @allow_from("privmsg")
 def djs(bot: bot.Sopel, trigger: trigger.Trigger):
-    return _djs(bot, trigger)
+    return djs_handler(bot, trigger)
