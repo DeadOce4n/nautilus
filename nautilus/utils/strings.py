@@ -12,6 +12,18 @@ GENERAL_MISSING_ARG = (
 GENERAL_MISSING_ARGS = (
     f"{COLOR}{C.RED}{BOLD}Error:{BOLD} Los argumentos {{}} son obligatorios"
 )
+GENERAL_REQUIRE_PRIVMSG = (
+    f"{COLOR}{C.RED}{BOLD}Error:{BOLD} El comando {BOLD}{{}}{BOLD} solo se"
+    f" puede usar por {BOLD}mensaje privado{BOLD}"
+)
+GENERAL_REQUIRE_SPECIFIC_CHANNEL = (
+    f"{COLOR}{C.RED}{BOLD}Error:{BOLD} El comando {BOLD}{{}}{BOLD} solo se"
+    f" puede usar en {BOLD}{{}}{BOLD}"
+)
+GENERAL_REQUIRE_CONTROL_CHANNEL = (
+    f"{COLOR}{C.RED}{BOLD}Error:{BOLD} El comando {BOLD}{{}}{BOLD} solo se"
+    f" puede usar en {BOLD}{{}}{BOLD}"
+)
 
 STREAMERS_AVAILABLE_ACTIONS = [
     f"{COLOR}{C.BLUE}Acciones disponibles para el comando {BOLD}!djs{BOLD}:",
