@@ -30,6 +30,7 @@ STREAMERS_AVAILABLE_ACTIONS = [
     f"{COLOR}{C.BLUE}!djs {BOLD}registrar",
     f"{COLOR}{C.BLUE}!djs {BOLD}borrar",
     f"{COLOR}{C.BLUE}!djs {BOLD}listar",
+    f"{COLOR}{C.BLUE}!djs {BOLD}cambiar-contraseña"
 ]
 STREAMERS_UNKNOWN_COMMAND = (
     f"{COLOR}{C.RED}{BOLD}Error:{BOLD} no se reconoce el comando {BOLD}{{}}"
@@ -63,7 +64,7 @@ STREAMERS_USER_NOT_EXISTS = (
 STREAMERS_ANON_NOT_EXISTS = f"{COLOR}{C.RED}{BOLD}Error:{BOLD} el usuario no existe"
 STREAMERS_CONFIRM_CHANGE_PASSWORD = (
     f"{COLOR}{C.BLUE}Para confirmar la contraseña del DJ {BOLD}{{}}{BOLD} escribe:"
-    f"{BOLD} !djs cambiar-password {{}} {{}} {{}}"
+    f"{BOLD} !djs cambiar-contraseña {{}} {{}} {{}}"
 )
 STREAMERS_CHANGE_PASSWORD_SUCCESS = (
     f"{COLOR}{C.GREEN}La contraseña del DJ {BOLD}{{}}{BOLD} se ha cambiado con éxito"
