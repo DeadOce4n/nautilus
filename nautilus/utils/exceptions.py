@@ -17,3 +17,7 @@ class ExceedingArgs(Exception):
 
 class RequiredArgsAfterOptionalArgs(Exception):
     pass
+
+class UnrecognizedArgs(Exception):
+    def __init__(self, unrecognized_args: list[str]):
+        self.unrecognized_args = unrecognized_args

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-fd . 'nautilus/' | entr -r sopel -c config.cfg
+fd . 'nautilus/' | ENV=development entr -r sopel -c config.cfg

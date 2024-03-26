@@ -30,7 +30,7 @@ STREAMERS_AVAILABLE_ACTIONS = [
     f"{COLOR}{C.BLUE}!djs {BOLD}registrar",
     f"{COLOR}{C.BLUE}!djs {BOLD}borrar",
     f"{COLOR}{C.BLUE}!djs {BOLD}listar",
-    f"{COLOR}{C.BLUE}!djs {BOLD}cambiar-contraseña"
+    f"{COLOR}{C.BLUE}!djs {BOLD}cambiar-contraseña",
 ]
 STREAMERS_UNKNOWN_COMMAND = (
     f"{COLOR}{C.RED}{BOLD}Error:{BOLD} no se reconoce el comando {BOLD}{{}}"
@@ -71,4 +71,20 @@ STREAMERS_CHANGE_PASSWORD_SUCCESS = (
 )
 STREAMERS_CHANGE_PASSWORD_PASSWORDS_NOT_SAME = (
     f"{COLOR}{C.RED}{BOLD}Error:{BOLD} las contraseñas no coinciden"
+)
+
+SONG_REQUESTS_EXAMPLE = [
+    f"{COLOR}{C.BLUE}Ejemplo: {BOLD}!pedir --artista=Sober --cancion=Náufrago",
+    f'{COLOR}{C.BLUE}Ejemplo: {BOLD}!pedir --artista="Dave Brubeck" --cancion="Take Five"',
+]
+SONG_REQUESTS_USER_HAS_REQUEST = (
+    f"{COLOR}{C.YELLOW}Error: ya tienes un pedido, {{}}, por favor espera"
+    f" {BOLD}{{}}{BOLD} antes de pedir otra canción"
+)
+SONG_REQUESTS_NEW_REQUEST = (
+    f'{COLOR}{C.GREEN}{{}}, {{}} ha pedido una cancion: {BOLD}"{{}}"{BOLD}, de {{}}.'
+)
+SONG_REQUESTS_UNRECOGNIZED_ARGS = (
+    f"{COLOR}{C.RED}{BOLD}Error:{BOLD} argumentos no reconocidos: {{}}; los nombres de"
+    " artistas y canciones que contengan espacios deben ir entre comillas."
 )
