@@ -40,9 +40,9 @@ def djs_handler(bot: Sopel, trigger: Trigger):
     """
     Commands:
     !djs listar [todos]
-    !djs registrar usuario contraseña
-    !djs borrar usuario [token]
-    !djs cambiar-contraseña usuario contraseña
+    !djs registrar <usuario> <contraseña>
+    !djs borrar <usuario> [token]
+    !djs cambiar-contraseña <usuario> <contraseña>
     """
     try:
         if "streamers_service" not in bot.memory["g"]:
